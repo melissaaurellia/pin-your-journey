@@ -14,7 +14,7 @@ export function attachmentFor(key: string): AttachmentVariant {
   for (let i = 0; i < key.length; i++) {
     hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
   }
-  return ATTACHMENT_VARIANTS[hash % ATTACHMENT_VARIANTS.length];
+  return ATTACHMENT_VARIANTS[hash % ATTACHMENT_VARIANTS.length]!;
 }
 
 /**
