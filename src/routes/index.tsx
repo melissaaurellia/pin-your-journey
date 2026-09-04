@@ -261,7 +261,7 @@ function PlaceList({
             <div className="relative mt-2 shrink-0 rotate-2 transition-transform duration-200 group-hover:rotate-0">
               {place.photos[0] ? (
                 <div className="relative">
-                  <div className="stamp-frame w-[104px]">
+                  <div className="stamp-frame w-[136px]">
                     <img src={place.photos[0]} alt="" loading="lazy" className="film-photo" />
                   </div>
                   <PhotoAttachment variant={attachmentFor(place.id)} />
