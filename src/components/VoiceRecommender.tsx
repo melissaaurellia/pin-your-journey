@@ -113,10 +113,11 @@ export default function VoiceRecommender({
   }
 
   return (
-    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
+    <div className="postcard airmail-edge space-y-4 p-5">
       <div>
-        <h2 className="text-xl">What are you in the mood for?</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="typed text-[10px] uppercase text-muted-foreground">Dispatch desk</p>
+        <h2 className="font-display text-2xl leading-tight">What are you in the mood for?</h2>
+        <p className="handwritten mt-1 text-muted-foreground">
           Hold the button and say it out loud — or type it.
         </p>
       </div>
@@ -138,8 +139,10 @@ export default function VoiceRecommender({
         >
           {busy ? <Loader2 className="size-6 animate-spin" /> : <Mic className="size-6" />}
         </button>
-        <div className="text-sm text-muted-foreground">
-          {recording ? "Listening… release when you're done" : transcript || "Hold to speak"}
+        <div className="text-muted-foreground">
+          <span className="handwritten">
+            {recording ? "Listening… release when you're done" : transcript || "Hold to speak"}
+          </span>
         </div>
       </div>
 
@@ -163,7 +166,12 @@ export default function VoiceRecommender({
         </Button>
       </form>
 
-      <Button variant="secondary" className="w-full" onClick={surpriseMe} disabled={busy}>
+      <Button
+        variant="secondary"
+        className="typed w-full rounded-none text-xs uppercase"
+        onClick={surpriseMe}
+        disabled={busy}
+      >
         <Dices className="size-4" /> Surprise me
       </Button>
 
@@ -176,10 +184,10 @@ export default function VoiceRecommender({
               <li key={pick.id}>
                 <button
                   onClick={() => onPick(pick.id)}
-                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-left transition-colors hover:bg-secondary"
+                  className="postcard w-full px-3 py-2 text-left transition-transform hover:-translate-y-0.5"
                 >
-                  <span className="block font-medium">{place.name}</span>
-                  <span className="block text-sm text-muted-foreground">{pick.reason}</span>
+                  <span className="block font-display text-lg leading-tight">{place.name}</span>
+                  <span className="handwritten block text-muted-foreground">{pick.reason}</span>
                 </button>
               </li>
             );
