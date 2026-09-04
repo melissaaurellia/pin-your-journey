@@ -43,16 +43,7 @@ export function Stamp({
 }) {
   return (
     <span
-      className={`relative inline-flex items-center justify-center bg-secondary px-2 py-1 text-center ${className}`}
-      style={{
-        maskImage:
-          "radial-gradient(circle at 3px 3px, transparent 3px, #000 3.5px)," +
-          "linear-gradient(#000 0 0)",
-        maskSize: "8px 8px, 100% 100%",
-        maskPosition: "-4px -4px, 0 0",
-        maskComposite: "intersect",
-        WebkitMaskComposite: "source-in",
-      }}
+      className={`relative inline-flex items-center justify-center border-2 border-dotted border-primary/50 bg-secondary px-2.5 py-1 ${className}`}
     >
       {children}
     </span>
