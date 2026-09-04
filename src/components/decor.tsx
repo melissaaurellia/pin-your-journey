@@ -58,7 +58,7 @@ export function PhotoAttachment({ variant }: { variant: AttachmentVariant }) {
       return (
         <span
           aria-hidden="true"
-          className="masking-tape absolute -top-2.5 left-1/2 z-10 h-5 w-16 -translate-x-1/2 -rotate-3"
+          className="masking-tape absolute -top-1 left-1/2 z-10 h-6 w-20 -translate-x-1/2 -rotate-3"
         />
       );
   }
