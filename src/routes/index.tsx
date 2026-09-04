@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { listPlaces, type PublicPlace } from "@/lib/places.functions";
+import { DEMO_PLACES } from "@/lib/demo-places";
 import MapView from "@/components/MapView";
 import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
@@ -36,10 +37,14 @@ function Home() {
   const [search, setSearch] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const { data: places = [], isLoading } = useQuery({
+  const { data: savedPlaces = [], isLoading } = useQuery({
     queryKey: ["places"],
     queryFn: () => listPlaces(),
   });
+
+  // Until the first real pin is saved, show placeholder pins so the map isn't empty.
+  const isDemo = !isLoading && savedPlaces.length === 0;
+  const places = isDemo ? DEMO_PLACES : savedPlaces;
 
   const tags = useMemo(() => {
     const counts = new Map<string, number>();
@@ -121,6 +126,16 @@ function Home() {
               </div>
             )}
           </div>
+
+          {isDemo && (
+            <p className="rounded-lg border border-dashed border-border px-3 py-2 text-sm text-muted-foreground">
+              These are example pins. Add your own from{" "}
+              <Link to="/manage" className="underline">
+                My pins
+              </Link>{" "}
+              and they'll replace them.
+            </p>
+          )}
 
           <PlaceList
             places={filtered}
