@@ -51,7 +51,7 @@ export default function PlacePanel({
             <img
               src={photos[photoIndex]}
               alt={`${place.name} photo ${photoIndex + 1}`}
-              className="film-photo aspect-[4/5] w-full object-cover"
+              className="film-photo"
               loading="lazy"
             />
           </div>
