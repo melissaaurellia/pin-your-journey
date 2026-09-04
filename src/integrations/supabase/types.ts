@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      place_photos: {
+        Row: {
+          created_at: string
+          id: string
+          place_id: string
+          position: number
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          place_id: string
+          position?: number
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          place_id?: string
+          position?: number
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      places: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          google_place_id: string | null
+          id: string
+          lat: number
+          lng: number
+          name: string
+          note: string | null
+          price_level: number | null
+          rating: number | null
+          tags: string[]
+          updated_at: string
+          user_id: string
+          visited_on: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          google_place_id?: string | null
+          id?: string
+          lat: number
+          lng: number
+          name: string
+          note?: string | null
+          price_level?: number | null
+          rating?: number | null
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+          visited_on?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          google_place_id?: string | null
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          note?: string | null
+          price_level?: number | null
+          rating?: number | null
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+          visited_on?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
