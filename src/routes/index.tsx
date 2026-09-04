@@ -8,7 +8,8 @@ import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Search } from "lucide-react";
+import { Search } from "lucide-react";
+import { CompassRose, Paperclip } from "@/components/decor";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/")({
@@ -73,24 +74,31 @@ function Home() {
   }
 
   return (
-    <div className="flex h-dvh flex-col bg-background paper-grain">
-      <header className="flex items-center justify-between gap-4 border-b border-border px-4 py-3 md:px-6">
-        <div className="flex items-baseline gap-2">
-          <MapPin className="size-5 shrink-0 text-primary" />
-          <h1 className="text-xl leading-none md:text-2xl">Pin There Done That</h1>
+    <div className="flex h-dvh flex-col parchment">
+      <header className="flex items-center justify-between gap-4 border-b-2 border-double border-border px-4 py-3 md:px-6">
+        <div className="flex items-center gap-3">
+          <CompassRose className="size-8 shrink-0 text-primary md:size-10" />
+          <div>
+            <h1 className="text-xl leading-none tracking-tight md:text-3xl">
+              Pin There Done That
+            </h1>
+            <p className="typed mt-1 text-[10px] uppercase text-muted-foreground md:text-[11px]">
+              A field map of places worth going
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="hidden text-sm text-muted-foreground sm:inline">
-            {places.length} {places.length === 1 ? "pin" : "pins"}
+        <div className="flex items-center gap-3">
+          <span className="postmark hidden px-3 py-1 text-[11px] sm:inline">
+            {places.length} pins
           </span>
-          <Button asChild variant="ghost" size="sm">
+          <Button asChild variant="ghost" size="sm" className="typed text-xs uppercase">
             <Link to="/manage">My pins</Link>
           </Button>
         </div>
       </header>
 
       <div className="flex min-h-0 flex-1 flex-col-reverse md:flex-row">
-        <div className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-border p-4 md:w-[380px] md:border-r">
+        <div className="flex w-full shrink-0 flex-col gap-5 overflow-y-auto border-border p-4 md:w-[400px] md:border-r-2 md:border-double">
           <VoiceRecommender places={places} onPick={select} />
 
           <div className="space-y-3">
@@ -109,7 +117,7 @@ function Home() {
                 <Badge
                   onClick={() => setActiveTag(null)}
                   variant={activeTag === null ? "default" : "outline"}
-                  className="cursor-pointer font-normal"
+                  className="typed cursor-pointer rounded-none text-[11px] font-normal uppercase"
                 >
                   All
                 </Badge>
@@ -118,7 +126,7 @@ function Home() {
                     key={tag}
                     onClick={() => setActiveTag(activeTag === tag ? null : tag)}
                     variant={activeTag === tag ? "default" : "outline"}
-                    className="cursor-pointer font-normal"
+                    className="typed cursor-pointer rounded-none text-[11px] font-normal uppercase"
                   >
                     {tag}
                   </Badge>
@@ -128,7 +136,7 @@ function Home() {
           </div>
 
           {isDemo && (
-            <p className="rounded-lg border border-dashed border-border px-3 py-2 text-sm text-muted-foreground">
+            <p className="handwritten border-l-2 border-primary/40 px-3 py-1 text-muted-foreground">
               These are example pins. Add your own from{" "}
               <Link to="/manage" className="underline">
                 My pins
@@ -187,26 +195,47 @@ function PlaceList({
   }
 
   return (
-    <ul className="space-y-2 pb-4">
-      {places.map((place) => (
-        <li key={place.id}>
+    <ul className="space-y-5 pb-6 pt-2">
+      {places.map((place, index) => (
+        <li key={place.id} style={{ transform: `rotate(${index % 2 ? 0.5 : -0.6}deg)` }}>
           <button
             onClick={() => onSelect(place.id)}
-            className={`w-full rounded-lg border px-3 py-2.5 text-left transition-colors ${
-              selectedId === place.id
-                ? "border-primary bg-secondary"
-                : "border-border bg-card hover:bg-secondary"
+            className={`postcard group relative flex w-full gap-3 p-3 pl-4 text-left transition-transform hover:-translate-y-0.5 ${
+              selectedId === place.id ? "ring-2 ring-primary/60" : ""
             }`}
           >
-            <div className="flex items-baseline justify-between gap-2">
-              <span className="font-medium">{place.name}</span>
-              {place.rating !== null && (
-                <span className="text-sm text-primary">{place.rating.toFixed(1)}</span>
+            {/* paper clip holding the photo to the card */}
+            <Paperclip className="absolute -top-3 left-6 z-10 h-10 w-5 text-foreground/45 drop-shadow-sm" />
+
+            {place.photos[0] ? (
+              <img
+                src={place.photos[0]}
+                alt=""
+                loading="lazy"
+                className="photo-print h-20 w-16 shrink-0 -rotate-1 object-cover"
+              />
+            ) : (
+              <div className="photo-print flex h-20 w-16 shrink-0 -rotate-1 items-center justify-center text-[10px] text-muted-foreground">
+                no photo
+              </div>
+            )}
+
+            <div className="min-w-0 flex-1 pt-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="truncate font-display text-lg leading-tight">{place.name}</span>
+                {place.rating !== null && (
+                  <span className="typed shrink-0 text-xs text-primary">
+                    {place.rating.toFixed(1)}
+                  </span>
+                )}
+              </div>
+              <span className="typed block text-[11px] uppercase text-muted-foreground">
+                {[place.city, place.country].filter(Boolean).join(" · ")}
+              </span>
+              {place.note && (
+                <p className="handwritten mt-1 line-clamp-2 text-foreground/80">{place.note}</p>
               )}
             </div>
-            <span className="block text-sm text-muted-foreground">
-              {[place.city, place.country].filter(Boolean).join(", ")}
-            </span>
           </button>
         </li>
       ))}

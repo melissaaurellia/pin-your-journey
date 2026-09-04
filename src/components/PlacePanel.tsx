@@ -3,6 +3,7 @@ import { getLiveDetails, type PublicPlace } from "@/lib/places.functions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Globe, Phone, Star } from "lucide-react";
+import { Paperclip, Stamp } from "@/components/decor";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {
@@ -30,12 +31,12 @@ export default function PlacePanel({
   const photos = place.photos;
 
   return (
-    <aside className="flex h-full flex-col overflow-y-auto border-border bg-card">
-      <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
+    <aside className="postcard airmail-edge flex h-full flex-col overflow-y-auto rounded-none">
+      <div className="flex items-start justify-between gap-3 border-b border-dashed border-border px-5 py-4 pl-6">
         <div>
-          <h2 className="text-2xl leading-tight">{place.name}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {[place.city, place.country].filter(Boolean).join(", ") || place.address}
+          <h2 className="font-display text-3xl leading-tight">{place.name}</h2>
+          <p className="typed mt-1 text-[11px] uppercase text-muted-foreground">
+            {[place.city, place.country].filter(Boolean).join(" · ") || place.address}
           </p>
         </div>
         <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close place details">
@@ -44,16 +45,20 @@ export default function PlacePanel({
       </div>
 
       {photos.length > 0 && (
-        <div className="relative aspect-[4/5] w-full shrink-0 bg-muted">
+        <div className="relative mx-5 mt-5 shrink-0 -rotate-1 photo-print">
+          <Paperclip className="absolute -top-4 right-8 z-10 h-12 w-6 text-foreground/45 drop-shadow" />
           <img
             src={photos[photoIndex]}
             alt={`${place.name} photo ${photoIndex + 1}`}
-            className="h-full w-full object-cover"
+            className="aspect-[4/5] w-full object-cover sepia-[0.15]"
             loading="lazy"
           />
+          <span className="handwritten mt-1 block text-center text-foreground/70">
+            {place.name}
+          </span>
           {photos.length > 1 && (
             <>
-              <div className="pointer-events-none absolute inset-x-3 top-3 flex gap-1">
+              <div className="pointer-events-none absolute inset-x-5 top-5 flex gap-1">
                 {photos.map((_, i) => (
                   <span
                     key={i}
@@ -81,38 +86,44 @@ export default function PlacePanel({
       <div className="space-y-5 px-5 py-5">
         <div className="flex flex-wrap items-center gap-3">
           {place.rating !== null && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
-              <Star className="size-3.5 fill-current" />
+            <Stamp className="typed gap-1 text-xs text-primary">
+              <Star className="mr-1 inline size-3 fill-current" />
               {place.rating.toFixed(1)}
-            </span>
+            </Stamp>
           )}
           {priceLabel(place.priceLevel) && (
-            <span className="text-sm text-muted-foreground">{priceLabel(place.priceLevel)}</span>
+            <span className="typed text-sm text-muted-foreground">
+              {priceLabel(place.priceLevel)}
+            </span>
           )}
           {place.visitedOn && (
-            <span className="text-sm text-muted-foreground">
+            <span className="postmark px-3 py-1 text-[10px]">
               Visited {new Date(place.visitedOn).toLocaleDateString()}
             </span>
           )}
         </div>
 
         {place.note && (
-          <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-foreground">
-            {place.note}
-          </p>
+          <div className="relative border-l-2 border-primary/30 pl-4">
+            <p className="handwritten whitespace-pre-wrap text-foreground/90">{place.note}</p>
+          </div>
         )}
 
         {place.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {place.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="font-normal">
+              <Badge
+                key={tag}
+                variant="secondary"
+                className="typed rounded-none text-[11px] font-normal uppercase"
+              >
                 {tag}
               </Badge>
             ))}
           </div>
         )}
 
-        <div className="space-y-2 border-t border-border pt-4">
+        <div className="space-y-2 border-t border-dashed border-border pt-4">
           {live.isLoading && <p className="text-sm text-muted-foreground">Loading live info…</p>}
           {live.data?.error && (
             <p className="text-sm text-muted-foreground">{live.data.error}</p>
