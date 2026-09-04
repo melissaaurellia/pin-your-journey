@@ -214,6 +214,7 @@
     mask-composite: exclude;
     pointer-events: none;
     opacity: 0.75;
+    z-index: 5;
   }
 }
 
