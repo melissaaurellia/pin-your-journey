@@ -8,7 +8,7 @@ import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { CompassRose } from "@/components/decor";
+import { CompassRose, PhotoAttachment, attachmentFor } from "@/components/decor";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -258,10 +258,13 @@ function PlaceList({
               </div>
             </div>
 
-            <div className="relative shrink-0 rotate-2 transition-transform duration-200 group-hover:rotate-0">
+            <div className="relative mt-2 shrink-0 rotate-2 transition-transform duration-200 group-hover:rotate-0">
               {place.photos[0] ? (
-                <div className="stamp-frame w-[104px]">
-                  <img src={place.photos[0]} alt="" loading="lazy" className="film-photo" />
+                <div className="relative">
+                  <div className="stamp-frame w-[104px]">
+                    <img src={place.photos[0]} alt="" loading="lazy" className="film-photo" />
+                  </div>
+                  <PhotoAttachment variant={attachmentFor(place.id)} />
                 </div>
               ) : (
                 <div className="photo-print flex h-[104px] w-[92px] items-center justify-center text-[10px] text-muted-foreground">
