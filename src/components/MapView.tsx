@@ -5,40 +5,40 @@ import type { PublicPlace } from "@/lib/places.functions";
 
 // Ink-on-paper map: cream land, watercolour water, hairline hand-inked roads.
 const MAP_STYLE: any[] = [
-  { elementType: "geometry", stylers: [{ color: "#f6f1e3" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#5d5346" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#f9f5ea" }, { weight: 3 }] },
+  { elementType: "geometry", stylers: [{ color: "#f4eedd" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#4a4034" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#fbf7ec" }, { weight: 3 }] },
   { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
   {
     featureType: "administrative",
     elementType: "geometry.stroke",
-    stylers: [{ color: "#b9ac95" }, { weight: 0.8 }],
+    stylers: [{ color: "#a2937a" }, { weight: 1 }],
   },
   { featureType: "administrative.land_parcel", stylers: [{ visibility: "off" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#e6ecd8" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#dde5c8" }] },
   {
     featureType: "road",
     elementType: "geometry.fill",
-    stylers: [{ color: "#fdfaf1" }],
+    stylers: [{ color: "#ffffff" }],
   },
   {
     featureType: "road",
     elementType: "geometry.stroke",
-    stylers: [{ color: "#8d8271" }, { weight: 0.5 }],
+    stylers: [{ color: "#9a8c76" }, { weight: 0.9 }],
   },
-  { featureType: "road.highway", elementType: "geometry.fill", stylers: [{ color: "#f3ece0" }] },
+  { featureType: "road.arterial", elementType: "geometry.fill", stylers: [{ color: "#fffdf6" }] },
+  { featureType: "road.highway", elementType: "geometry.fill", stylers: [{ color: "#f6dfae" }] },
   {
     featureType: "road.highway",
     elementType: "geometry.stroke",
-    stylers: [{ color: "#5a5145" }, { weight: 1 }],
+    stylers: [{ color: "#4a4034" }, { weight: 1.2 }],
   },
-  { featureType: "road", elementType: "labels", stylers: [{ visibility: "simplified" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#f2ecdc" }] },
-  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#f4eede" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#cfe6ee" }] },
-  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#7d97a1" }] },
+  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#f4eedd" }] },
+  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#efe7d3" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#bcd9e4" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#6b8791" }] },
 ];
 
 // Wobbly, hand-inked pin outline (deliberately imperfect curves).
