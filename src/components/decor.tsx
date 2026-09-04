@@ -1,5 +1,69 @@
 // Small hand-drawn ornaments for the old-map / postcard look.
 
+import pushpinAsset from "@/assets/pushpin.png.asset.json";
+import bulldogClipAsset from "@/assets/bulldog-clip.png.asset.json";
+import safetyPinAsset from "@/assets/safety-pin.png.asset.json";
+
+export type AttachmentVariant = "pin" | "clip" | "safety" | "tape";
+
+const ATTACHMENT_VARIANTS: AttachmentVariant[] = ["pin", "clip", "safety", "tape"];
+
+/** Pick an attachment style deterministically from a string (e.g. a place id). */
+export function attachmentFor(key: string): AttachmentVariant {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  return ATTACHMENT_VARIANTS[hash % ATTACHMENT_VARIANTS.length];
+}
+
+/**
+ * A physical-looking fastener holding a photo down: red pushpin, bulldog clip,
+ * safety pin, or a strip of masking tape. Render inside a `relative` wrapper
+ * around the photo.
+ */
+export function PhotoAttachment({ variant }: { variant: AttachmentVariant }) {
+  switch (variant) {
+    case "pin":
+      return (
+        <img
+          src={pushpinAsset.url}
+          alt=""
+          aria-hidden="true"
+          className="absolute -top-5 left-1/2 z-10 w-9 -translate-x-1/2 -rotate-6 drop-shadow-[2px_3px_2px_oklch(0.25_0.04_55/0.45)]"
+          draggable={false}
+        />
+      );
+    case "clip":
+      return (
+        <img
+          src={bulldogClipAsset.url}
+          alt=""
+          aria-hidden="true"
+          className="absolute -top-4 left-1/2 z-10 w-12 -translate-x-1/2 rotate-2 drop-shadow-[2px_3px_2px_oklch(0.25_0.04_55/0.4)]"
+          draggable={false}
+        />
+      );
+    case "safety":
+      return (
+        <img
+          src={safetyPinAsset.url}
+          alt=""
+          aria-hidden="true"
+          className="absolute -left-3 -top-2 z-10 w-14 -rotate-45 drop-shadow-[2px_2px_2px_oklch(0.25_0.04_55/0.4)]"
+          draggable={false}
+        />
+      );
+    case "tape":
+      return (
+        <span
+          aria-hidden="true"
+          className="masking-tape absolute -top-2.5 left-1/2 z-10 h-5 w-16 -translate-x-1/2 -rotate-3"
+        />
+      );
+  }
+}
+
 export function Paperclip({ className = "" }: { className?: string }) {
   const id = "clip-metal";
   return (
