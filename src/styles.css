@@ -4,6 +4,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "Biro Script";
+  src: url("/fonts/BiroScript.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /*
  * Pin There Done That — warm travel-journal design system.
  * Paper background, ink type, terracotta accent, olive support.
@@ -52,7 +60,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-display: "Playfair Display", "Instrument Serif", Georgia, serif;
   --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-hand: "Nothing You Could Do", "Caveat", "Segoe Script", cursive;
+  --font-hand: "Biro Script", "Nothing You Could Do", "Caveat", "Segoe Script", cursive;
   --font-type: "Special Elite", "Courier New", monospace;
 }
 
