@@ -260,13 +260,8 @@ function PlaceList({
 
             <div className="relative shrink-0 rotate-2 transition-transform duration-200 group-hover:rotate-0">
               {place.photos[0] ? (
-                <div className="stamp-frame">
-                  <img
-                    src={place.photos[0]}
-                    alt=""
-                    loading="lazy"
-                    className="film-photo h-[104px] w-[92px] object-cover"
-                  />
+                <div className="stamp-frame w-[104px]">
+                  <img src={place.photos[0]} alt="" loading="lazy" className="film-photo" />
                 </div>
               ) : (
                 <div className="photo-print flex h-[104px] w-[92px] items-center justify-center text-[10px] text-muted-foreground">
