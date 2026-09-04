@@ -153,9 +153,6 @@
   background-size: 4px 4px;
 }
 
-@utility map-ink {
-  filter: saturate(0.82) contrast(1.02) sepia(0.06);
-}
 
 @utility map-paper {
   background-image:
