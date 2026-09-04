@@ -31,7 +31,8 @@ export default function PlacePanel({
   const photos = place.photos;
 
   return (
-    <aside className="postcard airmail-edge flex h-full flex-col overflow-y-auto rounded-none">
+    <aside className="postcard airmail-edge relative h-full overflow-hidden">
+      <div className="flex h-full flex-col overflow-y-auto p-[5px]">
       <div className="flex items-start justify-between gap-3 border-b border-dashed border-border px-5 py-4 pl-6">
         <div>
           <h2 className="font-display text-3xl leading-tight">{place.name}</h2>
