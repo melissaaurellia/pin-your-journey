@@ -3,7 +3,7 @@ import { getLiveDetails, type PublicPlace } from "@/lib/places.functions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Globe, Phone, Star } from "lucide-react";
-import { Stamp } from "@/components/decor";
+import { Stamp, PhotoAttachment, attachmentFor } from "@/components/decor";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {

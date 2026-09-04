@@ -8,7 +8,7 @@ import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { CompassRose } from "@/components/decor";
+import { CompassRose, PhotoAttachment, attachmentFor } from "@/components/decor";
 import { Input } from "@/components/ui/input";
 import {
   Select,
