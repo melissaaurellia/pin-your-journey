@@ -258,6 +258,48 @@
     0 12px 22px -12px oklch(0.3 0.05 55 / 0.65);
 }
 
+/* Stamp frame: perforated jagged edge around a photo, like a postage stamp. */
+@utility stamp-frame {
+  --perf: 7px;
+  position: relative;
+  padding: calc(var(--perf) * 1.8);
+  background: oklch(0.965 0.018 88);
+  filter: drop-shadow(0 2px 2px oklch(0.3 0.05 55 / 0.28))
+    drop-shadow(0 10px 14px oklch(0.3 0.05 55 / 0.3));
+  -webkit-mask-image:
+    radial-gradient(circle var(--perf), transparent 97%, black),
+    linear-gradient(black, black);
+  -webkit-mask-size:
+    calc(var(--perf) * 2) calc(var(--perf) * 2),
+    calc(100% - var(--perf) * 2) calc(100% - var(--perf) * 2);
+  -webkit-mask-repeat: round, no-repeat;
+  -webkit-mask-position: 0 0, center;
+  mask-image:
+    radial-gradient(circle var(--perf), transparent 97%, black),
+    linear-gradient(black, black);
+  mask-size:
+    calc(var(--perf) * 2) calc(var(--perf) * 2),
+    calc(100% - var(--perf) * 2) calc(100% - var(--perf) * 2);
+  mask-repeat: round, no-repeat;
+  mask-position: 0 0, center;
+
+  /* film grain over the photo */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--perf) * 1.8);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
+/* Film-camera color treatment for photos. */
+@utility film-photo {
+  filter: sepia(0.22) saturate(0.82) contrast(1.05) brightness(1.02);
+}
+
 @utility map-ink {
   filter: sepia(0.16) saturate(0.92) contrast(1.02);
 }
