@@ -3,30 +3,60 @@ import { useEffect, useRef, useState } from "react";
 import { loadGoogleMaps } from "@/lib/google-maps-loader";
 import type { PublicPlace } from "@/lib/places.functions";
 
+// Ink-on-paper map: cream land, watercolour water, hairline hand-inked roads.
 const MAP_STYLE: any[] = [
-  { elementType: "geometry", stylers: [{ color: "#efe9dc" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#6b6154" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#f6f1e6" }] },
-  { featureType: "administrative", elementType: "geometry.stroke", stylers: [{ color: "#d9cfbc" }] },
+  { elementType: "geometry", stylers: [{ color: "#f6f1e3" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#5d5346" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#f9f5ea" }, { weight: 3 }] },
+  { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+  {
+    featureType: "administrative",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#b9ac95" }, { weight: 0.8 }],
+  },
+  { featureType: "administrative.land_parcel", stylers: [{ visibility: "off" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#e3dccc" }] },
+  { featureType: "poi.park", elementType: "geometry", stylers: [{ color: "#e6ecd8" }] },
+  {
+    featureType: "road",
+    elementType: "geometry.fill",
+    stylers: [{ color: "#fdfaf1" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#8d8271" }, { weight: 0.5 }],
+  },
+  { featureType: "road.highway", elementType: "geometry.fill", stylers: [{ color: "#f3ece0" }] },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#5a5145" }, { weight: 1 }],
+  },
   { featureType: "road", elementType: "labels", stylers: [{ visibility: "simplified" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#e8e2d1" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9d6cd" }] },
+  { featureType: "landscape.natural", elementType: "geometry", stylers: [{ color: "#f2ecdc" }] },
+  { featureType: "landscape.man_made", elementType: "geometry", stylers: [{ color: "#f4eede" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#cfe6ee" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#7d97a1" }] },
 ];
+
+// Wobbly, hand-inked pin outline (deliberately imperfect curves).
+const PIN_PATH =
+  "M12 0.8C6.6 0.6 2.5 4.6 2.6 9.4c0.1 3.4 2.1 7 4.4 10.1 1.6 2.1 3.4 4 4.9 5.7 1.6-1.8 3.6-3.9 5.2-6.2 2.2-3.1 4-6.5 4.1-9.7C21.3 4.5 17.3 1 12 0.8z";
 
 function pinIcon(maps: any, active: boolean) {
   return {
-    path: "M12 0C6.9 0 2.8 4.1 2.8 9.2 2.8 16.3 12 26 12 26s9.2-9.7 9.2-16.8C21.2 4.1 17.1 0 12 0z",
-    fillColor: active ? "#8a3f1d" : "#b4562a",
-    fillOpacity: 1,
-    strokeColor: "#3a2f26",
-    strokeWeight: 1.5,
-    scale: active ? 1.5 : 1.15,
+    path: PIN_PATH,
+    fillColor: active ? "#a8461d" : "#c26433",
+    fillOpacity: active ? 1 : 0.92,
+    strokeColor: "#3b3129",
+    strokeWeight: 1.6,
+    scale: active ? 1.55 : 1.15,
     anchor: new maps.Point(12, 26),
   };
 }
+
 
 type Props = {
   places: PublicPlace[];
