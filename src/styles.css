@@ -50,30 +50,32 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-display: "Instrument Serif", Georgia, serif;
+  --font-display: "Playfair Display", "Instrument Serif", Georgia, serif;
   --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat", "Segoe Script", cursive;
+  --font-type: "Special Elite", "Courier New", monospace;
 }
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.968 0.016 84.5);
-  --foreground: oklch(0.26 0.025 55);
-  --card: oklch(0.985 0.01 85);
+  --background: oklch(0.925 0.035 82);
+  --foreground: oklch(0.245 0.03 52);
+  --card: oklch(0.955 0.028 86);
   --card-foreground: oklch(0.26 0.025 55);
   --popover: oklch(0.985 0.01 85);
   --popover-foreground: oklch(0.26 0.025 55);
-  --primary: oklch(0.56 0.15 38);
+  --primary: oklch(0.5 0.15 34);
   --primary-foreground: oklch(0.985 0.01 85);
-  --secondary: oklch(0.925 0.022 85);
+  --secondary: oklch(0.895 0.038 83);
   --secondary-foreground: oklch(0.32 0.03 55);
-  --muted: oklch(0.93 0.018 85);
+  --muted: oklch(0.9 0.035 84);
   --muted-foreground: oklch(0.48 0.025 62);
-  --accent: oklch(0.62 0.075 135);
+  --accent: oklch(0.51 0.07 150);
   --accent-foreground: oklch(0.985 0.01 85);
   --destructive: oklch(0.52 0.19 27);
   --destructive-foreground: oklch(0.985 0.01 85);
-  --border: oklch(0.87 0.022 78);
-  --input: oklch(0.87 0.022 78);
+  --border: oklch(0.79 0.04 74);
+  --input: oklch(0.82 0.04 76);
   --ring: oklch(0.56 0.15 38);
   --chart-1: oklch(0.56 0.15 38);
   --chart-2: oklch(0.62 0.075 135);
@@ -171,4 +173,86 @@
 
 @utility map-vignette {
   box-shadow: inset 0 0 90px oklch(0.45 0.05 60 / 0.22);
+}
+
+
+/* ---------- Old-map / postcard surfaces ---------- */
+
+@utility parchment {
+  background-color: var(--color-background);
+  background-image:
+    radial-gradient(ellipse at 12% 8%, oklch(0.72 0.09 62 / 0.22), transparent 55%),
+    radial-gradient(ellipse at 88% 92%, oklch(0.7 0.1 55 / 0.2), transparent 55%),
+    radial-gradient(ellipse at 70% 20%, oklch(0.98 0.02 90 / 0.5), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+@utility postcard {
+  position: relative;
+  background-color: var(--color-card);
+  background-image:
+    radial-gradient(ellipse at 100% 0%, oklch(0.74 0.09 60 / 0.28), transparent 60%),
+    radial-gradient(ellipse at 0% 100%, oklch(0.74 0.09 60 / 0.22), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+  border: 1px solid oklch(0.72 0.05 70 / 0.9);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 oklch(1 0 0 / 0.6) inset,
+    0 6px 14px -8px oklch(0.35 0.05 55 / 0.55),
+    0 1px 2px oklch(0.35 0.05 55 / 0.18);
+}
+
+@utility airmail-edge {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 4px;
+    background: repeating-linear-gradient(
+      45deg,
+      oklch(0.5 0.15 34) 0 9px,
+      oklch(0.97 0.02 88) 9px 18px,
+      oklch(0.42 0.1 250) 18px 27px,
+      oklch(0.97 0.02 88) 27px 36px
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.75;
+  }
+}
+
+@utility postmark {
+  font-family: var(--font-type);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(0.5 0.15 34 / 0.75);
+  border: 2px solid oklch(0.5 0.15 34 / 0.45);
+  border-radius: 999px;
+}
+
+@utility handwritten {
+  font-family: var(--font-hand);
+  font-size: 1.2em;
+  line-height: 1.35;
+}
+
+@utility typed {
+  font-family: var(--font-type);
+  letter-spacing: 0.04em;
+}
+
+@utility photo-print {
+  background: oklch(0.985 0.012 90);
+  padding: 8px 8px 26px;
+  border: 1px solid oklch(0.78 0.03 78);
+  box-shadow: 0 8px 18px -10px oklch(0.3 0.05 55 / 0.7);
+}
+
+@utility map-ink {
+  filter: sepia(0.42) saturate(0.72) contrast(1.06) brightness(1.02);
 }
