@@ -3,7 +3,7 @@ import { getLiveDetails, type PublicPlace } from "@/lib/places.functions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Globe, Phone, Star } from "lucide-react";
-import { Paperclip, Stamp } from "@/components/decor";
+import { Stamp } from "@/components/decor";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {
@@ -46,14 +46,15 @@ export default function PlacePanel({
       </div>
 
       {photos.length > 0 && (
-        <div className="relative mx-5 mt-5 shrink-0 -rotate-1 photo-print">
-          <Paperclip className="absolute -top-4 right-8 z-10 h-12 w-6 text-foreground/45 drop-shadow" />
-          <img
-            src={photos[photoIndex]}
-            alt={`${place.name} photo ${photoIndex + 1}`}
-            className="aspect-[4/5] w-full object-cover sepia-[0.15]"
-            loading="lazy"
-          />
+        <div className="relative mx-5 mt-5 shrink-0 -rotate-1">
+          <div className="stamp-frame">
+            <img
+              src={photos[photoIndex]}
+              alt={`${place.name} photo ${photoIndex + 1}`}
+              className="film-photo aspect-[4/5] w-full object-cover"
+              loading="lazy"
+            />
+          </div>
           <span className="handwritten mt-1 block text-center text-foreground/70">
             {place.name}
           </span>
