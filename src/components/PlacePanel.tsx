@@ -183,6 +183,7 @@ export default function PlacePanel({
           )}
         </div>
       </div>
+      </div>
     </aside>
   );
 }
