@@ -52,7 +52,8 @@ export default function VoiceRecommender({
         return;
       }
       setPicks(result.picks);
-      onPick(result.picks[0].id);
+      const first = result.picks[0];
+      if (first) onPick(first.id);
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong finding a spot.");
@@ -105,6 +106,7 @@ export default function VoiceRecommender({
   function surpriseMe() {
     if (places.length === 0) return;
     const random = places[Math.floor(Math.random() * places.length)];
+    if (!random) return;
     setTranscript("Surprise me");
     setPicks([{ id: random.id, reason: "A random pin from the collection." }]);
     onPick(random.id);
