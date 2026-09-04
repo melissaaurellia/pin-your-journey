@@ -47,13 +47,16 @@ export default function PlacePanel({
 
       {photos.length > 0 && (
         <div className="relative mx-5 mt-5 shrink-0 -rotate-1">
-          <div className="stamp-frame">
-            <img
-              src={photos[photoIndex]}
-              alt={`${place.name} photo ${photoIndex + 1}`}
-              className="film-photo"
-              loading="lazy"
-            />
+          <div className="relative">
+            <div className="stamp-frame">
+              <img
+                src={photos[photoIndex]}
+                alt={`${place.name} photo ${photoIndex + 1}`}
+                className="film-photo"
+                loading="lazy"
+              />
+            </div>
+            <PhotoAttachment variant={attachmentFor(place.id)} />
           </div>
           <span className="handwritten mt-1 block text-center text-foreground/70">
             {place.name}
