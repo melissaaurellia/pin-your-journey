@@ -166,5 +166,17 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
     );
   }
 
-  return <div ref={containerRef} className="h-full w-full" aria-label="Map of visited places" />;
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      <div
+        ref={containerRef}
+        className="h-full w-full map-ink"
+        aria-label="Map of visited places"
+      />
+      {/* paper grain + soft edge wash, purely decorative */}
+      <div className="map-paper pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div className="map-vignette pointer-events-none absolute inset-0" aria-hidden="true" />
+    </div>
+  );
 }
+
