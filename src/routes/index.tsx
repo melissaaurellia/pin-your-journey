@@ -62,11 +62,10 @@ function Home() {
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([tag]) => tag);
   }, [places]);
 
-  const locations = useMemo(() => {
+  const countries = useMemo(() => {
     const set = new Set<string>();
     places.forEach((p) => {
-      const label = [p.city, p.country].filter(Boolean).join(", ");
-      if (label) set.add(label);
+      if (p.country) set.add(p.country);
     });
     return [...set].sort((a, b) => a.localeCompare(b));
   }, [places]);
@@ -75,10 +74,7 @@ function Home() {
     const term = search.trim().toLowerCase();
     return places.filter((place) => {
       if (activeTag !== ANY && !place.tags.includes(activeTag)) return false;
-      if (activeLocation !== ANY) {
-        const label = [place.city, place.country].filter(Boolean).join(", ");
-        if (label !== activeLocation) return false;
-      }
+      if (activeLocation !== ANY && place.country !== activeLocation) return false;
       if (!term) return true;
       return [place.name, place.city, place.country, place.note]
         .filter(Boolean)
@@ -137,15 +133,15 @@ function Home() {
             <div className="grid grid-cols-2 gap-2">
               <Select value={activeLocation} onValueChange={setActiveLocation}>
                 <SelectTrigger className="typed rounded-xl text-[11px] uppercase">
-                  <SelectValue placeholder="Location" />
+                  <SelectValue placeholder="Country" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={ANY} className="typed text-[11px] uppercase">
-                    All locations
+                    All countries
                   </SelectItem>
-                  {locations.map((loc) => (
-                    <SelectItem key={loc} value={loc} className="typed text-[11px] uppercase">
-                      {loc}
+                  {countries.map((country) => (
+                    <SelectItem key={country} value={country} className="typed text-[11px] uppercase">
+                      {country}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -259,23 +255,19 @@ function PlaceList({
                       })
                     : "Date unknown"}
                 </span>
-                {place.rating !== null && (
-                  <span className="typed ml-auto text-[11px] text-primary">
-                    {place.rating.toFixed(1)}
-                  </span>
-                )}
               </div>
             </div>
 
             <div className="relative shrink-0 rotate-2 transition-transform duration-200 group-hover:rotate-0">
-              <Paperclip className="absolute -top-5 left-1/2 z-10 h-12 w-6 -translate-x-1/2 -rotate-6" />
               {place.photos[0] ? (
-                <img
-                  src={place.photos[0]}
-                  alt=""
-                  loading="lazy"
-                  className="photo-print h-[104px] w-[92px] object-cover"
-                />
+                <div className="stamp-frame">
+                  <img
+                    src={place.photos[0]}
+                    alt=""
+                    loading="lazy"
+                    className="film-photo h-[104px] w-[92px] object-cover"
+                  />
+                </div>
               ) : (
                 <div className="photo-print flex h-[104px] w-[92px] items-center justify-center text-[10px] text-muted-foreground">
                   no photo
