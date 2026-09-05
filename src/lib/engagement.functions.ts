@@ -67,6 +67,30 @@ export const getEngagement = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => idSchema.parse(input))
   .handler(async ({ data }) => loadEngagement(data.placeId, data.visitorId));
 
+const countsSchema = z.object({
+  placeIds: z.array(z.string().uuid()).max(200),
+});
+
+export type EngagementCounts = Record<string, { hearts: number; comments: number }>;
+
+export const getEngagementCounts = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => countsSchema.parse(input))
+  .handler(async ({ data }): Promise<EngagementCounts> => {
+    if (data.placeIds.length === 0) return {};
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const [{ data: reactions }, { data: comments }] = await Promise.all([
+      supabaseAdmin.from("place_reactions").select("place_id").in("place_id", data.placeIds),
+      supabaseAdmin.from("place_comments").select("place_id").in("place_id", data.placeIds),
+    ]);
+
+    const counts: EngagementCounts = {};
+    for (const id of data.placeIds) counts[id] = { hearts: 0, comments: 0 };
+    for (const row of reactions ?? []) counts[row.place_id]!.hearts += 1;
+    for (const row of comments ?? []) counts[row.place_id]!.comments += 1;
+    return counts;
+  });
+
 export const toggleHeart = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => idSchema.parse(input))
   .handler(async ({ data }) => {
