@@ -134,10 +134,10 @@ function Home() {
               {places.length} pins
             </span>
             <Link
-              to="/manage"
+              to="/about"
               className="typed inline-flex min-h-[44px] items-center rounded-md border border-dashed border-border bg-[hsl(var(--background))]/70 px-3 text-[11px] uppercase tracking-wide text-foreground shadow-sm transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98]"
             >
-              My pins
+              About
             </Link>
           </div>
         </header>
@@ -235,6 +235,15 @@ function Home() {
             selectedId={selectedId}
             onSelect={select}
           />
+
+          <div className="pb-4 pt-2 text-center">
+            <Link
+              to="/manage"
+              className="typed inline-flex min-h-[44px] items-center px-2 text-[10px] uppercase tracking-wide text-muted-foreground/70 underline-offset-4 transition-colors hover:text-muted-foreground hover:underline"
+            >
+              manage
+            </Link>
+          </div>
         </div>
 
         <div
