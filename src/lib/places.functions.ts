@@ -33,7 +33,10 @@ export const listPlaces = createServerFn({ method: "GET" }).handler(
     if (error) throw new Error(error.message);
     if (!places || places.length === 0) return [];
 
-    const { data: photos } = await supabase
+    // Photo rows and signed URLs are server-only (service role) — no public access.
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: photos } = await supabaseAdmin
       .from("place_photos")
       .select("place_id, storage_path, position")
       .order("position", { ascending: true });
@@ -42,7 +45,7 @@ export const listPlaces = createServerFn({ method: "GET" }).handler(
     const signedByPath = new Map<string, string>();
 
     if (paths.length > 0) {
-      const { data: signed } = await supabase.storage
+      const { data: signed } = await supabaseAdmin.storage
         .from("place-photos")
         .createSignedUrls(paths, 60 * 60 * 6);
       for (const item of signed ?? []) {
