@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X, Globe, Star } from "lucide-react";
 import { Stamp } from "@/components/decor";
-import pinIcon from "@/assets/pin-icon.png.asset.json";
+import pinIcon from "@/assets/pin-icon-white.png.asset.json";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {
