@@ -1,10 +1,9 @@
-import { useRef, useState } from "react";
-import { Mic, Loader2, Dices } from "lucide-react";
+import { useState } from "react";
+import { Dices } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { startRecording, blobToBase64, type Recorder } from "@/lib/wav-recorder";
-import { transcribeAudio, matchPlaces } from "@/lib/recommend.functions";
+import { matchPlaces } from "@/lib/recommend.functions";
 import type { PublicPlace } from "@/lib/places.functions";
 
 type Pick = { id: string; reason: string };
@@ -16,10 +15,7 @@ export default function VoiceRecommender({
   places: PublicPlace[];
   onPick: (id: string) => void;
 }) {
-  const recorderRef = useRef<Recorder | null>(null);
-  const [recording, setRecording] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [transcript, setTranscript] = useState("");
   const [typed, setTyped] = useState("");
   const [picks, setPicks] = useState<Pick[]>([]);
 
