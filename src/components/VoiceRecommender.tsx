@@ -58,52 +58,10 @@ export default function VoiceRecommender({
     }
   }
 
-  async function beginRecording() {
-    if (busy || recording) return;
-    try {
-      recorderRef.current = await startRecording();
-      setRecording(true);
-    } catch (error) {
-      console.error(error);
-      toast.error("Microphone access is needed to speak your request.");
-    }
-  }
-
-  async function endRecording() {
-    if (!recorderRef.current) return;
-    const recorder = recorderRef.current;
-    recorderRef.current = null;
-    setRecording(false);
-    setBusy(true);
-    try {
-      const blob = await recorder.stop();
-      if (blob.size < 4096) {
-        toast("That was too quick — hold the button while you speak.");
-        return;
-      }
-      const result = await transcribeAudio({
-        data: { audioBase64: await blobToBase64(blob), mimeType: "audio/wav" },
-      });
-      if (!result.text) {
-        toast(result.error ?? "I didn't catch that.");
-        return;
-      }
-      setTranscript(result.text);
-      setBusy(false);
-      await runMatch(result.text);
-    } catch (error) {
-      console.error(error);
-      toast.error("Recording failed. Try typing instead.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
   function surpriseMe() {
     if (places.length === 0) return;
     const random = places[Math.floor(Math.random() * places.length)];
     if (!random) return;
-    setTranscript("Surprise me");
     setPicks([{ id: random.id, reason: "A random pin from the collection." }]);
     onPick(random.id);
   }
