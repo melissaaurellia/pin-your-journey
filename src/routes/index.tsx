@@ -365,6 +365,18 @@ function PlaceList({
                   no photo
                 </div>
               )}
+              {counts[place.id] && (
+                <div className="mt-2 flex items-center justify-center gap-3 text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Heart className="size-3.5 fill-current text-primary" />
+                    <span className="typed text-[10px]">{counts[place.id]!.hearts}</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MessageCircle className="size-3.5" />
+                    <span className="typed text-[10px]">{counts[place.id]!.comments}</span>
+                  </span>
+                </div>
+              )}
             </div>
           </button>
         </li>
