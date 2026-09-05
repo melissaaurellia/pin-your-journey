@@ -2,8 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getLiveDetails, type PublicPlace } from "@/lib/places.functions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { X, ExternalLink, Globe, Phone, Star } from "lucide-react";
+import { X, Globe, Star } from "lucide-react";
 import { Stamp } from "@/components/decor";
+import pinIcon from "@/assets/pin-icon.png.asset.json";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {
