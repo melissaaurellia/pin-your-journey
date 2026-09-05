@@ -65,21 +65,21 @@ function AboutPage() {
           alt=""
           aria-hidden="true"
           loading="lazy"
-          className="pointer-events-none absolute -left-2 top-24 w-20 -rotate-12 opacity-95 drop-shadow-md md:left-6 md:w-28"
+          className="pointer-events-none absolute -left-2 top-24 z-10 w-20 -rotate-12 opacity-95 drop-shadow-md md:left-6 md:w-28"
         />
         <img
           src={fruitAsset.url}
           alt=""
           aria-hidden="true"
           loading="lazy"
-          className="pointer-events-none absolute -right-3 top-40 w-24 rotate-12 drop-shadow-md md:right-4 md:w-36"
+          className="pointer-events-none absolute -right-3 top-40 z-10 w-24 rotate-12 drop-shadow-md md:right-4 md:w-36"
         />
         <img
           src={stampAsset.url}
           alt=""
           aria-hidden="true"
           loading="lazy"
-          className="pointer-events-none absolute right-6 top-2 hidden w-16 rotate-6 drop-shadow-md sm:block md:w-20"
+          className="pointer-events-none absolute right-6 top-2 z-10 hidden w-16 rotate-6 drop-shadow-md sm:block md:w-20"
         />
 
         {/* The journal page */}
