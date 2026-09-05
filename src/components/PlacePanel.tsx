@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { X, Globe, Star } from "lucide-react";
 import { Stamp } from "@/components/decor";
 import pinIcon from "@/assets/pin-icon-white.png.asset.json";
+import PostcardGuestbook from "@/components/PostcardGuestbook";
 import { useState } from "react";
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function priceLabel(level: number | null) {
   if (!level) return null;
@@ -154,6 +157,9 @@ export default function PlacePanel({
             </>
           )}
         </div>
+
+        {UUID_RE.test(place.id) && <PostcardGuestbook placeId={place.id} />}
+
       </div>
       </div>
     </aside>

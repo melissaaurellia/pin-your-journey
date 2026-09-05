@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      place_comments: {
+        Row: {
+          author_name: string
+          body: string
+          created_at: string
+          id: string
+          place_id: string
+        }
+        Insert: {
+          author_name: string
+          body: string
+          created_at?: string
+          id?: string
+          place_id: string
+        }
+        Update: {
+          author_name?: string
+          body?: string
+          created_at?: string
+          id?: string
+          place_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_comments_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       place_photos: {
         Row: {
           created_at: string
@@ -42,6 +74,35 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      place_reactions: {
+        Row: {
+          created_at: string
+          id: string
+          place_id: string
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          place_id: string
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          place_id?: string
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_reactions_place_id_fkey"
             columns: ["place_id"]
             isOneToOne: false
             referencedRelation: "places"
