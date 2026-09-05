@@ -81,7 +81,6 @@ export default function VoiceRecommender({
         onSubmit={(event) => {
           event.preventDefault();
           if (!typed.trim()) return;
-          setTranscript(typed.trim());
           runMatch(typed.trim());
         }}
       >
