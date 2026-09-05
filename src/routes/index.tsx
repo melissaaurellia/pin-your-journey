@@ -9,7 +9,8 @@ import MapView from "@/components/MapView";
 import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Heart, MessageCircle, Search } from "lucide-react";
+import { getEngagementCounts, type EngagementCounts } from "@/lib/engagement.functions";
 import { PhotoAttachment, attachmentFor } from "@/components/decor";
 import ptdLogoAsset from "@/assets/ptd-logo.png.asset.json";
 import { Input } from "@/components/ui/input";
@@ -101,6 +102,18 @@ function Home() {
   }, [places, activeTag, activeLocation, search]);
 
   const selected = places.find((p) => p.id === selectedId) ?? null;
+
+  // Heart/comment counts only exist for real (UUID) pins, not demo placeholders.
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const realIds = useMemo(
+    () => places.map((p) => p.id).filter((id) => UUID_RE.test(id)),
+    [places],
+  );
+  const { data: counts = {} } = useQuery({
+    queryKey: ["engagement-counts", realIds],
+    enabled: realIds.length > 0,
+    queryFn: () => getEngagementCounts({ data: { placeIds: realIds } }),
+  });
 
   function select(id: string) {
     const place = places.find((p) => p.id === id);
@@ -234,6 +247,7 @@ function Home() {
             isLoading={isLoading}
             selectedId={selectedId}
             onSelect={select}
+            counts={counts}
           />
 
           <div className="pb-4 pt-2 text-center">
@@ -280,11 +294,13 @@ function PlaceList({
   isLoading,
   selectedId,
   onSelect,
+  counts,
 }: {
   places: PublicPlace[];
   isLoading: boolean;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  counts: EngagementCounts;
 }) {
   if (isLoading) {
     return <p className="text-sm text-muted-foreground">Loading pins…</p>;
@@ -347,6 +363,18 @@ function PlaceList({
               ) : (
                 <div className="photo-print flex h-[104px] w-[92px] items-center justify-center text-[10px] text-muted-foreground">
                   no photo
+                </div>
+              )}
+              {counts[place.id] && (
+                <div className="mt-2 flex items-center justify-center gap-3 text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Heart className="size-3.5 fill-current text-primary" />
+                    <span className="typed text-[10px]">{counts[place.id]!.hearts}</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MessageCircle className="size-3.5" />
+                    <span className="typed text-[10px]">{counts[place.id]!.comments}</span>
+                  </span>
                 </div>
               )}
             </div>
