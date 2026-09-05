@@ -174,8 +174,9 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
     const maps = mapsRef.current;
     if (!ready || !maps) return;
     for (const [id, marker] of markersRef.current) {
-      marker.setIcon(pinIcon(maps, id === selectedId));
-      marker.setZIndex(id === selectedId ? 999 : 1);
+      const isActive = id === selectedId;
+      marker.setIcon(pinIcon(maps, { active: isActive, glow: isActive || id === hoveredRef.current }));
+      marker.setZIndex(isActive ? 999 : 1);
     }
   }, [selectedId, ready, places]);
 
