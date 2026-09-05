@@ -56,8 +56,7 @@ export const listPlaces = createServerFn({ method: "GET" }).handler(
       visitedOn: place.visited_on,
       photos: (photos ?? [])
         .filter((p) => p.place_id === place.id)
-        .map((p) => signedByPath.get(p.storage_path))
-        .filter((url): url is string => Boolean(url)),
+        .map((p) => p.storage_path),
     }));
   },
 );
