@@ -111,52 +111,59 @@ function Home() {
 
   return (
     <div className="parchment flex min-h-dvh flex-col overflow-x-hidden md:h-dvh md:min-h-0">
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b-2 border-double border-border bg-[hsl(var(--background))]/95 px-4 py-3 backdrop-blur md:static md:bg-transparent md:px-6 md:backdrop-blur-none">
-        <div className="flex min-w-0 items-center gap-3">
-          <img
-            src={ptdLogoAsset.url}
-            alt="Pin There Done That logo"
-            className="size-10 shrink-0 drop-shadow-sm md:size-12"
-          />
-          <div className="min-w-0">
-            <h1 className="truncate text-xl leading-none tracking-tight md:text-3xl">
-              Pin There Done That
-            </h1>
-            <p className="typed mt-1 text-[10px] uppercase text-muted-foreground md:text-[11px]">
-              A field map of places worth going
-            </p>
+      {/* Combined sticky header + mobile switch */}
+      <div className="sticky top-0 z-30 bg-[hsl(var(--background))]/95 shadow-sm backdrop-blur md:static md:bg-transparent md:shadow-none md:backdrop-blur-none">
+        <header className="flex items-center justify-between gap-3 border-b-2 border-double border-border px-3 py-2.5 pt-[max(0.625rem,env(safe-area-inset-top))] md:px-6 md:py-3 md:pt-3">
+          <div className="flex min-w-0 flex-1 items-center gap-2.5 md:gap-3">
+            <img
+              src={ptdLogoAsset.url}
+              alt="Pin There Done That logo"
+              className="size-11 shrink-0 drop-shadow-sm md:size-12"
+            />
+            <div className="min-w-0">
+              <h1 className="truncate text-[22px] leading-none tracking-tight md:text-3xl">
+                Pin There Done That
+              </h1>
+              <p className="typed mt-1 hidden truncate text-[9px] uppercase tracking-normal text-muted-foreground min-[360px]:block md:text-[11px]">
+                A field map of places worth going
+              </p>
+            </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="postmark hidden px-3 py-1 text-[11px] sm:inline">
+              {places.length} pins
+            </span>
+            <Link
+              to="/manage"
+              className="typed inline-flex min-h-[44px] items-center rounded-md border border-dashed border-border bg-[hsl(var(--background))]/70 px-3 text-[11px] uppercase tracking-wide text-foreground shadow-sm transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98]"
+            >
+              My pins
+            </Link>
+          </div>
+        </header>
+
+        {/* Mobile Map / List switch */}
+        <div className="px-3 py-2 md:hidden">
+          <div className="postcard grid h-[48px] grid-cols-2 gap-1 rounded-xl p-1">
+            {(["map", "list"] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => setMobileView(mode)}
+                aria-pressed={mobileView === mode}
+                className={`typed flex items-center justify-center rounded-lg text-[11px] uppercase tracking-wide transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
+                  mobileView === mode
+                    ? "bg-primary/25 text-foreground shadow-inner ring-1 ring-primary/60"
+                    : "text-muted-foreground hover:bg-foreground/5"
+                }`}
+              >
+                {mode === "map" ? "Map" : "List"}
+              </button>
+            ))}
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-3">
-          <span className="postmark hidden px-3 py-1 text-[11px] sm:inline">
-            {places.length} pins
-          </span>
-          <Button asChild variant="ghost" size="sm" className="typed text-xs uppercase">
-            <Link to="/manage">My pins</Link>
-          </Button>
-        </div>
-      </header>
-
-      {/* Mobile Map / List switch */}
-      <div className="sticky top-[68px] z-20 border-b border-dashed border-border bg-[hsl(var(--background))]/95 px-4 py-2 backdrop-blur md:hidden">
-        <div className="postcard grid grid-cols-2 gap-1 rounded-xl p-1">
-          {(["map", "list"] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => setMobileView(mode)}
-              aria-pressed={mobileView === mode}
-              className={`typed min-h-[44px] rounded-lg text-[11px] uppercase tracking-wide transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
-                mobileView === mode
-                  ? "bg-primary/15 text-foreground shadow-inner ring-1 ring-primary/40"
-                  : "text-muted-foreground hover:bg-foreground/5"
-              }`}
-            >
-              {mode === "map" ? "Map" : "List"}
-            </button>
-          ))}
-        </div>
       </div>
+
 
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <div
