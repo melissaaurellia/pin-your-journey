@@ -1,10 +1,9 @@
-import { useRef, useState } from "react";
-import { Mic, Loader2, Dices } from "lucide-react";
+import { useState } from "react";
+import { Dices } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { startRecording, blobToBase64, type Recorder } from "@/lib/wav-recorder";
-import { transcribeAudio, matchPlaces } from "@/lib/recommend.functions";
+import { matchPlaces } from "@/lib/recommend.functions";
 import type { PublicPlace } from "@/lib/places.functions";
 
 type Pick = { id: string; reason: string };
@@ -16,10 +15,7 @@ export default function VoiceRecommender({
   places: PublicPlace[];
   onPick: (id: string) => void;
 }) {
-  const recorderRef = useRef<Recorder | null>(null);
-  const [recording, setRecording] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [transcript, setTranscript] = useState("");
   const [typed, setTyped] = useState("");
   const [picks, setPicks] = useState<Pick[]>([]);
 
@@ -62,52 +58,10 @@ export default function VoiceRecommender({
     }
   }
 
-  async function beginRecording() {
-    if (busy || recording) return;
-    try {
-      recorderRef.current = await startRecording();
-      setRecording(true);
-    } catch (error) {
-      console.error(error);
-      toast.error("Microphone access is needed to speak your request.");
-    }
-  }
-
-  async function endRecording() {
-    if (!recorderRef.current) return;
-    const recorder = recorderRef.current;
-    recorderRef.current = null;
-    setRecording(false);
-    setBusy(true);
-    try {
-      const blob = await recorder.stop();
-      if (blob.size < 4096) {
-        toast("That was too quick — hold the button while you speak.");
-        return;
-      }
-      const result = await transcribeAudio({
-        data: { audioBase64: await blobToBase64(blob), mimeType: "audio/wav" },
-      });
-      if (!result.text) {
-        toast(result.error ?? "I didn't catch that.");
-        return;
-      }
-      setTranscript(result.text);
-      setBusy(false);
-      await runMatch(result.text);
-    } catch (error) {
-      console.error(error);
-      toast.error("Recording failed. Try typing instead.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
   function surpriseMe() {
     if (places.length === 0) return;
     const random = places[Math.floor(Math.random() * places.length)];
     if (!random) return;
-    setTranscript("Surprise me");
     setPicks([{ id: random.id, reason: "A random pin from the collection." }]);
     onPick(random.id);
   }
@@ -116,34 +70,10 @@ export default function VoiceRecommender({
     <div className="postcard airmail-edge space-y-4 p-5">
       <div>
         <p className="typed text-[10px] uppercase text-muted-foreground">Dispatch desk</p>
-        <h2 className="font-display text-2xl leading-tight">What are you in the mood for?</h2>
+        <h2 className="font-display text-2xl leading-tight">What do you want to explore next?</h2>
         <p className="handwritten mt-1 text-muted-foreground">
-          Hold the button and say it out loud — or type it.
+          Input your dream destination
         </p>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          disabled={busy}
-          onPointerDown={beginRecording}
-          onPointerUp={endRecording}
-          onPointerLeave={() => recording && endRecording()}
-          onContextMenu={(event) => event.preventDefault()}
-          className={`inline-flex size-16 shrink-0 touch-none select-none items-center justify-center rounded-full border-2 border-foreground/15 transition-transform ${
-            recording
-              ? "scale-110 bg-destructive text-destructive-foreground"
-              : "bg-primary text-primary-foreground hover:scale-105"
-          } disabled:opacity-60`}
-          aria-label="Hold to record your request"
-        >
-          {busy ? <Loader2 className="size-6 animate-spin" /> : <Mic className="size-6" />}
-        </button>
-        <div className="text-muted-foreground">
-          <span className="handwritten">
-            {recording ? "Listening… release when you're done" : transcript || "Hold to speak"}
-          </span>
-        </div>
       </div>
 
       <form
@@ -151,7 +81,6 @@ export default function VoiceRecommender({
         onSubmit={(event) => {
           event.preventDefault();
           if (!typed.trim()) return;
-          setTranscript(typed.trim());
           runMatch(typed.trim());
         }}
       >
