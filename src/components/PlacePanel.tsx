@@ -154,6 +154,9 @@ export default function PlacePanel({
             </>
           )}
         </div>
+
+        {UUID_RE.test(place.id) && <PostcardGuestbook placeId={place.id} />}
+
       </div>
       </div>
     </aside>
