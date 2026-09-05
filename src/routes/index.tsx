@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 import { useQuery } from "@tanstack/react-query";
 import { listPlaces, type PublicPlace } from "@/lib/places.functions";
 import { DEMO_PLACES } from "@/lib/demo-places";
