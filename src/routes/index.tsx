@@ -167,7 +167,7 @@ function Home() {
 
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <div
-          className={`w-full shrink-0 flex-col gap-5 border-border p-4 md:flex md:w-[400px] md:overflow-y-auto md:border-r-2 md:border-double ${
+          className={`w-full shrink-0 flex-col gap-5 border-border px-3 pb-4 pt-2 md:flex md:w-[400px] md:overflow-y-auto md:border-r-2 md:border-double md:p-4 ${
             mobileView === "list" ? "flex" : "hidden"
           }`}
         >
