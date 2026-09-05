@@ -116,34 +116,10 @@ export default function VoiceRecommender({
     <div className="postcard airmail-edge space-y-4 p-5">
       <div>
         <p className="typed text-[10px] uppercase text-muted-foreground">Dispatch desk</p>
-        <h2 className="font-display text-2xl leading-tight">What are you in the mood for?</h2>
+        <h2 className="font-display text-2xl leading-tight">What do you want to explore next?</h2>
         <p className="handwritten mt-1 text-muted-foreground">
-          Hold the button and say it out loud — or type it.
+          Input your dream destination
         </p>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          disabled={busy}
-          onPointerDown={beginRecording}
-          onPointerUp={endRecording}
-          onPointerLeave={() => recording && endRecording()}
-          onContextMenu={(event) => event.preventDefault()}
-          className={`inline-flex size-16 shrink-0 touch-none select-none items-center justify-center rounded-full border-2 border-foreground/15 transition-transform ${
-            recording
-              ? "scale-110 bg-destructive text-destructive-foreground"
-              : "bg-primary text-primary-foreground hover:scale-105"
-          } disabled:opacity-60`}
-          aria-label="Hold to record your request"
-        >
-          {busy ? <Loader2 className="size-6 animate-spin" /> : <Mic className="size-6" />}
-        </button>
-        <div className="text-muted-foreground">
-          <span className="handwritten">
-            {recording ? "Listening… release when you're done" : transcript || "Hold to speak"}
-          </span>
-        </div>
       </div>
 
       <form
