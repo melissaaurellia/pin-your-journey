@@ -141,9 +141,17 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
           position: { lat: place.lat, lng: place.lng },
           map,
           title: place.name,
-          icon: pinIcon(maps, false),
+          icon: pinIcon(maps, {}),
         });
         marker.addListener("click", () => selectRef.current(place.id));
+        marker.addListener("mouseover", () => {
+          hoveredRef.current = place.id;
+          marker.setIcon(pinIcon(maps, { active: place.id === selectedRef.current, glow: true }));
+        });
+        marker.addListener("mouseout", () => {
+          hoveredRef.current = null;
+          marker.setIcon(pinIcon(maps, { active: place.id === selectedRef.current }));
+        });
         markersRef.current.set(place.id, marker);
       } else {
         marker.setPosition({ lat: place.lat, lng: place.lng });
