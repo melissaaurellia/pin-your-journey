@@ -66,13 +66,38 @@ function Home() {
   }, [isMobile, sheetOpen]);
 
 
-  const { data: savedPlaces = [], isLoading } = useQuery({
+  const { data: rawPlaces = [], isLoading } = useQuery({
     queryKey: ["places"],
     queryFn: () => listPlaces(),
   });
 
+  // listPlaces returns storage paths; sign them fresh in the browser on every
+  // visit so photo links can never expire on a cached page.
+  const { data: savedPlaces = [] } = useQuery({
+    queryKey: ["place-photo-urls", rawPlaces],
+    enabled: rawPlaces.length > 0,
+    queryFn: async () => {
+      const paths = rawPlaces.flatMap((p) => p.photos);
+      if (paths.length === 0) return rawPlaces;
+      const { data: signed } = await supabase.storage
+        .from("place-photos")
+        .createSignedUrls(paths, 60 * 60 * 24);
+      const byPath = new Map(
+        (signed ?? [])
+          .filter((item) => item.path && item.signedUrl)
+          .map((item) => [item.path!, item.signedUrl!] as const),
+      );
+      return rawPlaces.map((place) => ({
+        ...place,
+        photos: place.photos
+          .map((path) => byPath.get(path))
+          .filter((url): url is string => Boolean(url)),
+      }));
+    },
+  });
+
   // Until the first real pin is saved, show placeholder pins so the map isn't empty.
-  const isDemo = !isLoading && savedPlaces.length === 0;
+  const isDemo = !isLoading && rawPlaces.length === 0;
   const places = isDemo ? DEMO_PLACES : savedPlaces;
 
   const tags = useMemo(() => {
