@@ -33,25 +33,12 @@ export const listPlaces = createServerFn({ method: "GET" }).handler(
     if (error) throw new Error(error.message);
     if (!places || places.length === 0) return [];
 
-    // Photo rows and signed URLs are server-only (service role) — no public access.
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    const { data: photos } = await supabaseAdmin
+    // Photo paths are public (place_photos has a public SELECT policy); the
+    // browser turns them into fresh signed URLs so links never expire.
+    const { data: photos } = await supabase
       .from("place_photos")
       .select("place_id, storage_path, position")
       .order("position", { ascending: true });
-
-    const paths = (photos ?? []).map((p) => p.storage_path);
-    const signedByPath = new Map<string, string>();
-
-    if (paths.length > 0) {
-      const { data: signed } = await supabaseAdmin.storage
-        .from("place-photos")
-        .createSignedUrls(paths, 60 * 60 * 6);
-      for (const item of signed ?? []) {
-        if (item.path && item.signedUrl) signedByPath.set(item.path, item.signedUrl);
-      }
-    }
 
     return places.map((place) => ({
       id: place.id,
