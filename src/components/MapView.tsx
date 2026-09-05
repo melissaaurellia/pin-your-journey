@@ -45,15 +45,33 @@ const MAP_STYLE: any[] = [
 const PIN_PATH =
   "M12 0.8C6.6 0.6 2.5 4.6 2.6 9.4c0.1 3.4 2.1 7 4.4 10.1 1.6 2.1 3.4 4 4.9 5.7 1.6-1.8 3.6-3.9 5.2-6.2 2.2-3.1 4-6.5 4.1-9.7C21.3 4.5 17.3 1 12 0.8z";
 
-function pinIcon(maps: any, active: boolean) {
+// Circular cut-out in the pin head (rendered as a hole via fill-rule evenodd).
+const HOLE_PATH = "M12 4.6 a3.4 3.4 0 1 0 0.01 0 z";
+
+// Padded viewBox so the hover glow (a blurred halo) isn't clipped.
+const VB = { x: -6, y: -6, w: 36, h: 39 };
+const TIP = { x: 12, y: 26 };
+
+function pinIcon(maps: any, opts: { active?: boolean; glow?: boolean } = {}) {
+  const active = !!opts.active;
+  const glow = !!opts.glow;
+  const pinW = active ? 32 : 26;
+  const scale = pinW / 24;
+  const w = VB.w * scale;
+  const h = VB.h * scale;
+  const fill = active ? "#a8461d" : "#c26433";
+  const body = `${PIN_PATH} ${HOLE_PATH}`;
+  const filter = glow
+    ? `<filter id="gl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="1.8"/></filter>`
+    : "";
+  const glowEl = glow
+    ? `<path d="${body}" fill="#ffcf8a" fill-rule="evenodd" filter="url(#gl)" opacity="0.95"/>`
+    : "";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${VB.x} ${VB.y} ${VB.w} ${VB.h}" width="${w}" height="${h}">${filter}${glowEl}<path d="${body}" fill="${fill}" fill-rule="evenodd"/></svg>`;
   return {
-    path: PIN_PATH,
-    fillColor: active ? "#a8461d" : "#c26433",
-    fillOpacity: active ? 1 : 0.92,
-    strokeColor: "#3b3129",
-    strokeWeight: 1.6,
-    scale: active ? 1.55 : 1.15,
-    anchor: new maps.Point(12, 26),
+    url: `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`,
+    anchor: new maps.Point((TIP.x - VB.x) * scale, (TIP.y - VB.y) * scale),
+    scaledSize: new maps.Size(w, h),
   };
 }
 
@@ -72,6 +90,9 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
   const markersRef = useRef<Map<string, any>>(new Map());
   const selectRef = useRef(onSelect);
   selectRef.current = onSelect;
+  const selectedRef = useRef<string | null>(selectedId);
+  selectedRef.current = selectedId;
+  const hoveredRef = useRef<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
@@ -123,9 +144,17 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
           position: { lat: place.lat, lng: place.lng },
           map,
           title: place.name,
-          icon: pinIcon(maps, false),
+          icon: pinIcon(maps, {}),
         });
         marker.addListener("click", () => selectRef.current(place.id));
+        marker.addListener("mouseover", () => {
+          hoveredRef.current = place.id;
+          marker.setIcon(pinIcon(maps, { active: place.id === selectedRef.current, glow: true }));
+        });
+        marker.addListener("mouseout", () => {
+          hoveredRef.current = null;
+          marker.setIcon(pinIcon(maps, { active: place.id === selectedRef.current }));
+        });
         markersRef.current.set(place.id, marker);
       } else {
         marker.setPosition({ lat: place.lat, lng: place.lng });
@@ -145,8 +174,9 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
     const maps = mapsRef.current;
     if (!ready || !maps) return;
     for (const [id, marker] of markersRef.current) {
-      marker.setIcon(pinIcon(maps, id === selectedId));
-      marker.setZIndex(id === selectedId ? 999 : 1);
+      const isActive = id === selectedId;
+      marker.setIcon(pinIcon(maps, { active: isActive, glow: isActive || id === hoveredRef.current }));
+      marker.setZIndex(isActive ? 999 : 1);
     }
   }, [selectedId, ready, places]);
 
