@@ -99,12 +99,12 @@ export default function PostcardGuestbook({ placeId }: { placeId: string }) {
           maxLength={500}
           rows={3}
           onChange={(event) => setBody(event.target.value)}
-          placeholder="Your comment"
+          placeholder="Been here? Tell me what I missed."
           className="rounded-xl"
         />
         {error && <p className="text-[11px] text-destructive">{error}</p>}
         <Button type="submit" size="sm" disabled={!canPost} className="min-h-[44px]">
-          {comment.isPending ? "Posting…" : "Post"}
+          {comment.isPending ? "Sending…" : "Send it"}
         </Button>
       </form>
 
