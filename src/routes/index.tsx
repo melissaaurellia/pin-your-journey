@@ -239,7 +239,9 @@ function Home() {
 
         <div
           className={`relative min-h-0 flex-1 ${
-            mobileView === "map" ? "block h-[calc(100dvh-132px)]" : "hidden"
+            mobileView === "map"
+              ? "block h-[calc(100dvh-136px-env(safe-area-inset-top)-env(safe-area-inset-bottom))]"
+              : "hidden"
           } md:block md:h-auto`}
         >
           <MapView places={filtered} selectedId={selectedId} onSelect={select} focus={focus} />
