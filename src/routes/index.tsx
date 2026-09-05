@@ -122,10 +122,10 @@ function Home() {
             />
             <div className="min-w-0">
               <h1 className="truncate text-[22px] leading-none tracking-tight md:text-3xl">
-                A Field Map of Melissa's Travel
+                Pin There Done That
               </h1>
               <p className="typed mt-1 hidden truncate text-[9px] uppercase tracking-normal text-muted-foreground min-[360px]:block md:text-[11px]">
-                Pinned with notes, photos and ratings
+                A field map of Melissa's travel
               </p>
             </div>
           </div>
