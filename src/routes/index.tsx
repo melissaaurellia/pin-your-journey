@@ -41,12 +41,27 @@ export const Route = createFileRoute("/")({
 const ANY = "__any__";
 
 function Home() {
+  const isMobile = useIsMobile();
+  const [mobileView, setMobileView] = useState<"map" | "list">("map");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focus, setFocus] = useState<{ lat: number; lng: number; zoom?: number } | null>(null);
   const [activeTag, setActiveTag] = useState<string>(ANY);
   const [activeLocation, setActiveLocation] = useState<string>(ANY);
   const [search, setSearch] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Lock background scrolling while the mobile detail sheet is open.
+  useEffect(() => {
+    if (!isMobile || !sheetOpen) return;
+    const y = window.scrollY;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+      window.scrollTo(0, y);
+    };
+  }, [isMobile, sheetOpen]);
+
 
   const { data: savedPlaces = [], isLoading } = useQuery({
     queryKey: ["places"],
