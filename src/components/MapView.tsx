@@ -90,6 +90,9 @@ export default function MapView({ places, selectedId, onSelect, focus }: Props) 
   const markersRef = useRef<Map<string, any>>(new Map());
   const selectRef = useRef(onSelect);
   selectRef.current = onSelect;
+  const selectedRef = useRef<string | null>(selectedId);
+  selectedRef.current = selectedId;
+  const hoveredRef = useRef<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
 
