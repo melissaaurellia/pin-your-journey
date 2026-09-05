@@ -47,6 +47,13 @@ export type Database = {
             referencedRelation: "places"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "public_places"
+            referencedColumns: ["id"]
+          },
         ]
       }
       places: {
@@ -108,7 +115,96 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_place_photos: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          place_id: string | null
+          position: number | null
+          storage_path: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          place_id?: string | null
+          position?: number | null
+          storage_path?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          place_id?: string | null
+          position?: number | null
+          storage_path?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "place_photos_place_id_fkey"
+            columns: ["place_id"]
+            isOneToOne: false
+            referencedRelation: "public_places"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      public_places: {
+        Row: {
+          address: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          google_place_id: string | null
+          id: string | null
+          lat: number | null
+          lng: number | null
+          name: string | null
+          note: string | null
+          price_level: number | null
+          rating: number | null
+          tags: string[] | null
+          visited_on: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          google_place_id?: string | null
+          id?: string | null
+          lat?: number | null
+          lng?: number | null
+          name?: string | null
+          note?: string | null
+          price_level?: number | null
+          rating?: number | null
+          tags?: string[] | null
+          visited_on?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          google_place_id?: string | null
+          id?: string | null
+          lat?: number | null
+          lng?: number | null
+          name?: string | null
+          note?: string | null
+          price_level?: number | null
+          rating?: number | null
+          tags?: string[] | null
+          visited_on?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
