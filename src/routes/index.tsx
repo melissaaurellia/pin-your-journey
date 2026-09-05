@@ -8,7 +8,8 @@ import PlacePanel from "@/components/PlacePanel";
 import VoiceRecommender from "@/components/VoiceRecommender";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import { CompassRose, PhotoAttachment, attachmentFor } from "@/components/decor";
+import { PhotoAttachment, attachmentFor } from "@/components/decor";
+import ptdLogoAsset from "@/assets/ptd-logo.png.asset.json";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -95,7 +96,11 @@ function Home() {
     <div className="flex h-dvh flex-col parchment">
       <header className="flex items-center justify-between gap-4 border-b-2 border-double border-border px-4 py-3 md:px-6">
         <div className="flex min-w-0 items-center gap-3">
-          <CompassRose className="size-8 shrink-0 text-primary md:size-10" />
+          <img
+            src={ptdLogoAsset.url}
+            alt="Pin There Done That logo"
+            className="size-10 shrink-0 drop-shadow-sm md:size-12"
+          />
           <div className="min-w-0">
             <h1 className="truncate text-xl leading-none tracking-tight md:text-3xl">
               Pin There Done That

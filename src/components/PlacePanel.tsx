@@ -3,7 +3,7 @@ import { getLiveDetails, type PublicPlace } from "@/lib/places.functions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Globe, Phone, Star } from "lucide-react";
-import { Stamp, PhotoAttachment, attachmentFor } from "@/components/decor";
+import { Stamp } from "@/components/decor";
 import { useState } from "react";
 
 function priceLabel(level: number | null) {
@@ -56,7 +56,6 @@ export default function PlacePanel({
                 loading="lazy"
               />
             </div>
-            <PhotoAttachment variant={attachmentFor(place.id)} />
           </div>
           <span className="handwritten mt-1 block text-center text-foreground/70">
             {place.name}
