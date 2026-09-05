@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 import { useQuery } from "@tanstack/react-query";
 import { listPlaces, type PublicPlace } from "@/lib/places.functions";
 import { DEMO_PLACES } from "@/lib/demo-places";
@@ -41,12 +43,27 @@ export const Route = createFileRoute("/")({
 const ANY = "__any__";
 
 function Home() {
+  const isMobile = useIsMobile();
+  const [mobileView, setMobileView] = useState<"map" | "list">("map");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focus, setFocus] = useState<{ lat: number; lng: number; zoom?: number } | null>(null);
   const [activeTag, setActiveTag] = useState<string>(ANY);
   const [activeLocation, setActiveLocation] = useState<string>(ANY);
   const [search, setSearch] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Lock background scrolling while the mobile detail sheet is open.
+  useEffect(() => {
+    if (!isMobile || !sheetOpen) return;
+    const y = window.scrollY;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+      window.scrollTo(0, y);
+    };
+  }, [isMobile, sheetOpen]);
+
 
   const { data: savedPlaces = [], isLoading } = useQuery({
     queryKey: ["places"],
@@ -93,8 +110,8 @@ function Home() {
   }
 
   return (
-    <div className="flex h-dvh flex-col parchment">
-      <header className="flex items-center justify-between gap-4 border-b-2 border-double border-border px-4 py-3 md:px-6">
+    <div className="parchment flex min-h-dvh flex-col overflow-x-hidden md:h-dvh md:min-h-0">
+      <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b-2 border-double border-border bg-[hsl(var(--background))]/95 px-4 py-3 backdrop-blur md:static md:bg-transparent md:px-6 md:backdrop-blur-none">
         <div className="flex min-w-0 items-center gap-3">
           <img
             src={ptdLogoAsset.url}
@@ -120,8 +137,33 @@ function Home() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1 flex-col-reverse md:flex-row">
-        <div className="flex w-full shrink-0 flex-col gap-5 overflow-y-auto border-border p-4 md:w-[400px] md:border-r-2 md:border-double">
+      {/* Mobile Map / List switch */}
+      <div className="sticky top-[68px] z-20 border-b border-dashed border-border bg-[hsl(var(--background))]/95 px-4 py-2 backdrop-blur md:hidden">
+        <div className="postcard grid grid-cols-2 gap-1 rounded-xl p-1">
+          {(["map", "list"] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setMobileView(mode)}
+              aria-pressed={mobileView === mode}
+              className={`typed min-h-[44px] rounded-lg text-[11px] uppercase tracking-wide transition-colors active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
+                mobileView === mode
+                  ? "bg-primary/15 text-foreground shadow-inner ring-1 ring-primary/40"
+                  : "text-muted-foreground hover:bg-foreground/5"
+              }`}
+            >
+              {mode === "map" ? "Map" : "List"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+        <div
+          className={`w-full shrink-0 flex-col gap-5 border-border p-4 md:flex md:w-[400px] md:overflow-y-auto md:border-r-2 md:border-double ${
+            mobileView === "list" ? "flex" : "hidden"
+          }`}
+        >
           <VoiceRecommender places={places} onPick={select} />
 
           <div className="space-y-3">
@@ -188,19 +230,32 @@ function Home() {
           />
         </div>
 
-        <div className="relative min-h-[45dvh] flex-1">
+        <div
+          className={`relative min-h-0 flex-1 ${
+            mobileView === "map" ? "block h-[calc(100dvh-132px)]" : "hidden"
+          } md:block md:h-auto`}
+        >
           <MapView places={filtered} selectedId={selectedId} onSelect={select} focus={focus} />
 
-          {selected && sheetOpen && (
+          {selected && sheetOpen && !isMobile && (
             <div className="absolute inset-y-0 right-0 z-10 w-full max-w-[420px] p-2 md:p-3">
               <PlacePanel place={selected} onClose={() => setSheetOpen(false)} />
             </div>
           )}
         </div>
       </div>
+
+      {selected && sheetOpen && isMobile && (
+        <div className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm md:hidden">
+          <div className="absolute inset-x-0 bottom-0 top-6 p-2">
+            <PlacePanel place={selected} onClose={() => setSheetOpen(false)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 
 function PlaceList({
   places,
