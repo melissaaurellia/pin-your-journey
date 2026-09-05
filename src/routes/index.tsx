@@ -70,13 +70,15 @@ function Home() {
   const { data: rawPlaces = [], isLoading } = useQuery({
     queryKey: ["places"],
     queryFn: () => listPlaces(),
+    staleTime: 5 * 60 * 1000,
   });
 
   // listPlaces returns storage paths; sign them fresh in the browser on every
   // visit so photo links can never expire on a cached page.
-  const { data: savedPlaces = [] } = useQuery({
+  const { data: signedPlaces } = useQuery({
     queryKey: ["place-photo-urls", rawPlaces],
     enabled: rawPlaces.length > 0,
+    staleTime: 5 * 60 * 1000,
     queryFn: async () => {
       const paths = rawPlaces.flatMap((p) => p.photos);
       if (paths.length === 0) return rawPlaces;
@@ -99,7 +101,10 @@ function Home() {
 
   // Until the first real pin is saved, show placeholder pins so the map isn't empty.
   const isDemo = !isLoading && rawPlaces.length === 0;
+  // Show pins as soon as the list arrives; photo links fill in a moment later.
+  const savedPlaces = signedPlaces ?? rawPlaces.map((p) => ({ ...p, photos: [] }));
   const places = isDemo ? DEMO_PLACES : savedPlaces;
+
 
   const tags = useMemo(() => {
     const counts = new Map<string, number>();
