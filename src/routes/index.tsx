@@ -24,13 +24,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pin There Done That — my map of places worth going" },
+      { title: "A Field Map of Melissa's Travel" },
       {
         name: "description",
         content:
-          "Every place I've been, pinned with notes, photos and ratings. Explore the map or let it pick somewhere for you.",
+          "Every place Melissa has been, pinned with notes, photos and ratings. Explore the map or let it pick somewhere for you.",
       },
-      { property: "og:title", content: "Pin There Done That" },
+      { property: "og:title", content: "A Field Map of Melissa's Travel" },
       {
         property: "og:description",
         content: "A personal world map of tried-and-tested places, with notes, photos and ratings.",
@@ -122,10 +122,10 @@ function Home() {
             />
             <div className="min-w-0">
               <h1 className="truncate text-[22px] leading-none tracking-tight md:text-3xl">
-                Pin There Done That
+                A Field Map of Melissa's Travel
               </h1>
               <p className="typed mt-1 hidden truncate text-[9px] uppercase tracking-normal text-muted-foreground min-[360px]:block md:text-[11px]">
-                A field map of places worth going
+                Pinned with notes, photos and ratings
               </p>
             </div>
           </div>
