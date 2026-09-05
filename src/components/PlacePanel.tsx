@@ -147,14 +147,11 @@ export default function PlacePanel({
                   Google: {details.googleRating} ({details.userRatingCount ?? 0} reviews)
                 </p>
               )}
-              {details.address && (
-                <p className="text-sm text-muted-foreground">{details.address}</p>
-              )}
               <div className="flex flex-wrap gap-2 pt-2">
                 {details.googleMapsUri && (
                   <Button asChild size="sm" variant="default">
                     <a href={details.googleMapsUri} target="_blank" rel="noreferrer">
-                      <ExternalLink className="size-4" /> Google Maps
+                      <img src={pinIcon.url} alt="" className="size-4" /> Google Maps
                     </a>
                   </Button>
                 )}
@@ -165,24 +162,7 @@ export default function PlacePanel({
                     </a>
                   </Button>
                 )}
-                {details.phone && (
-                  <Button asChild size="sm" variant="outline">
-                    <a href={`tel:${details.phone}`}>
-                      <Phone className="size-4" /> Call
-                    </a>
-                  </Button>
-                )}
               </div>
-              {details.weekdayHours && details.weekdayHours.length > 0 && (
-                <details className="pt-2 text-sm text-muted-foreground">
-                  <summary className="cursor-pointer">Opening hours</summary>
-                  <ul className="mt-2 space-y-1">
-                    {details.weekdayHours.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                </details>
-              )}
             </>
           )}
         </div>
