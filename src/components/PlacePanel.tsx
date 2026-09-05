@@ -135,18 +135,6 @@ export default function PlacePanel({
           )}
           {details && (
             <>
-              {details.openNow !== null && details.openNow !== undefined && (
-                <p className="text-sm">
-                  <span className={details.openNow ? "text-accent" : "text-destructive"}>
-                    {details.openNow ? "Open now" : "Closed now"}
-                  </span>
-                </p>
-              )}
-              {details.googleRating && (
-                <p className="text-sm text-muted-foreground">
-                  Google: {details.googleRating} ({details.userRatingCount ?? 0} reviews)
-                </p>
-              )}
               <div className="flex flex-wrap gap-2 pt-2">
                 {details.googleMapsUri && (
                   <Button asChild size="sm" variant="default">
